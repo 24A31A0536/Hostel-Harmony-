@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hostel Harmony | Complete Hostel Management System</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.65)), 
+                        url('https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=1600');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,140,66,0.1) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 24px 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(20px);
+            border-radius: 80px;
+            padding: 10px 32px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 215, 150, 0.5);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 38px;
+            color: #ff8c42;
+            background: linear-gradient(135deg, #fff5e6, #fff);
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255, 245, 235, 0.8);
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn i {
+            font-size: 1rem;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            background: #ff8c42;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 140, 66, 0.3);
+        }
+
+        /* Sections */
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 32px 36px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 215, 150, 0.6);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 6px solid #ff8c42;
+            padding-left: 22px;
+            color: #2c3e50;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 28px;
+            padding: 26px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ffe0b5;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #e67e22;
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 40px;
+            border: 1.5px solid #ffe0b5;
+            background: #fefaf5;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff8c42;
+            box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff8c42, #ff6b2c);
+            border: none;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 12px 24px;
+            border-radius: 50px;
+            transition: 0.3s;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(255, 107, 44, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f4f8;
+            border: 1px solid #ffcf9a;
+            color: #ff8c42;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #ffe6d5;
+        }
+
+        /* Table Styles */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 24px;
+            background: white;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 16px 14px;
+            text-align: left;
+            border-bottom: 1px solid #ffebd2;
+        }
+
+        th {
+            background: #fff3e6;
+            font-weight: 700;
+            color: #e67e22;
+            font-size: 0.95rem;
+        }
+
+        td {
+            color: #2c3e50;
+        }
+
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-full {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-partial {
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .amount {
+            font-weight: 700;
+            color: #27ae60;
+        }
+
+        .badge {
+            background: #fff0e0;
+            border-radius: 30px;
+            padding: 5px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #e67e22;
+            display: inline-block;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            color: #ffdd99;
+            margin-top: 20px;
+        }
+
+        .image-gallery {
+            display: flex;
+            gap: 20px;
+            margin-top: 35px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 245, 0.9);
+            border-radius: 30px;
+            padding: 18px;
+            text-align: center;
+            width: 160px;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+
+        .gallery-item i {
+            font-size: 48px;
+            color: #ff8c42;
+            margin-bottom: 12px;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-cards {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #fff5e6, #fff);
+            padding: 15px 20px;
+            border-radius: 20px;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            border: 1px solid #ffe0b5;
+        }
+
+        .payment-method-badge {
+            background: #e8f0fe;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Login Modal Styles */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .login-modal {
+            background: white;
+            border-radius: 40px;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.3);
+            text-align: center;
+            border: 1px solid #ffcf9a;
+        }
+
+        .login-modal i {
+            font-size: 60px;
+            color: #ff8c42;
+            margin-bottom: 15px;
+        }
+
+        .login-modal h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        .login-modal input {
+            margin-bottom: 20px;
+        }
+
+        .login-error {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 780px) {
+            .navbar { flex-direction: column; gap: 15px; border-radius: 40px; }
+            .section { padding: 20px; }
+            .section-title { font-size: 1.4rem; }
+            th, td { padding: 10px 8px; font-size: 0.85rem; }
+        }
+
+        .about-content {
+            background: white;
+            border-radius: 28px;
+            padding: 30px;
+            margin-top: 10px;
+        }
+
+        .about-stats {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .about-stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            background: #fff9f0;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .about-stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .about-stat-item h3 {
+            font-size: 28px;
+            color: #ff8c42;
+            margin: 10px 0 5px;
+        }
+
+        .payment-row:hover {
+            background-color: #fff9f0;
+            transition: background 0.2s;
+        }
+        /* Student Login Page Styles */
+.student-login-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.student-login-card {
+    background: white;
+    border-radius: 40px;
+    padding: 45px 40px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.student-login-card h2 {
+    color: #ff8c42;
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.student-login-card .login-icon {
+    font-size: 70px;
+    color: #ff8c42;
+    margin-bottom: 20px;
+}
+
+.login-input-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.login-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.login-input-group input {
+    width: 100%;
+    padding: 14px 20px;
+    border: 2px solid #ffe0b5;
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.login-input-group input:focus {
+    border-color: #ff8c42;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.2);
+}
+
+.login-btn {
+    background: linear-gradient(135deg, #ff8c42, #ff6b2c);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 107, 44, 0.3);
+}
+
+.register-link {
+    margin-top: 20px;
+    color: #666;
+}
+
+.register-link a {
+    color: #ff8c42;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Student Dashboard Styles */
+.student-dashboard-container {
+    background: white;
+    border-radius: 30px;
+    padding: 30px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ffe0b5;
+}
+
+.dashboard-header h2 {
+    color: #ff8c42;
+    font-size: 1.8rem;
+}
+
+.logout-btn {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
+}
+
+.student-info-card {
+    background: linear-gradient(135deg, #fff5e6, #fff);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-left: 5px solid #ff8c42;
+}
+
+.student-info-card h3 {
+    color: #ff8c42;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-row {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px dashed #ffe0b5;
+}
+
+.info-label {
+    font-weight: 600;
+    width: 120px;
+    color: #2c3e50;
+}
+
+.info-value {
+    color: #555;
+    flex: 1;
+}
+
+.payment-status-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.paid-badge {
+    background: #d4edda;
+    color: #155724;
+}
+
+.pending-badge {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: none;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: none;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Navigation -->
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-home"></i>
+            <h1>HOSTEL HARMONY</h1>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-section="home"><i class="fas fa-home"></i> Home</button>
+            <button class="nav-btn" data-section="student-login"><i class="fas fa-sign-in-alt"></i> Student Login</button>
+            <button class="nav-btn" data-section="register"><i class="fas fa-user-plus"></i> Register</button>
+            <button class="nav-btn" data-section="rooms"><i class="fas fa-bed"></i> Rooms</button>
+            <button class="nav-btn" data-section="allocation"><i class="fas fa-map-marked-alt"></i> Allocation</button>
+            <button class="nav-btn" data-section="payments"><i class="fas fa-rupee-sign"></i> Payments</button>
+            <button class="nav-btn" data-section="admin" id="adminNavBtn"><i class="fas fa-user-cog"></i> Admin</button>
+            <button class="nav-btn" data-section="about"><i class="fas fa-info-circle"></i> About</button>
+            <button class="nav-btn" data-section="contact"><i class="fas fa-phone-alt"></i> Contact</button>
+        </div>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div id="home-section" class="section">
+        <div class="section-title"><i class="fas fa-building"></i> Welcome to Hostel Harmony</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 35px; align-items: center;">
+            <div style="flex: 1.5;">
+                <p style="font-size: 1.3rem; margin-bottom: 20px; font-weight: 500;">🏡 <strong>Your Perfect Home Away from Home</strong></p>
+                <p style="margin-bottom: 15px;">Experience comfortable, safe, and affordable student living with modern amenities and smart room allocation system.</p>
+                <p>✔️ Fully Furnished AC/Non-AC Rooms | ✔️ High-Speed WiFi | ✔️ 24/7 Security & CCTV</p>
+                <p>✔️ Nutritious Meals | ✔️ Study Lounge | ✔️ Gym & Recreation | ✔️ Monthly Rent ₹8,500 onwards</p>
+                <div style="margin-top: 30px; display: flex; gap: 15px;">
+                    <button class="btn-primary" style="width: auto; padding: 12px 32px;" id="exploreBtn"><i class="fas fa-bed"></i> Explore Rooms</button>
+                    <button class="btn-secondary" style="width: auto; padding: 12px 32px;" id="registerBtn"><i class="fas fa-edit"></i> Register Now</button>
+                </div>
+            </div>
+            <div style="flex: 1; display: flex; justify-content: center; gap: 20px;">
+                <div style="background: rgba(255,140,66,0.15); border-radius: 60px; padding: 25px;">
+                    <i class="fas fa-university" style="font-size: 95px; color: #ff8c42;"></i>
+                </div>
+                <div style="background: rgba(255,140,66,0.15); border-radius: 60px; padding: 25px;">
+                    <i class="fas fa-people-arrows" style="font-size: 95px; color: #ff8c42;"></i>
+                </div>
+            </div>
+        </div>
+        <div class="image-gallery">
+            <div class="gallery-item"><i class="fas fa-wifi"></i><p>High Speed WiFi</p></div>
+            <div class="gallery-item"><i class="fas fa-dumbbell"></i><p>Gym & Sports</p></div>
+            <div class="gallery-item"><i class="fas fa-utensils"></i><p>Healthy Meals</p></div>
+            <div class="gallery-item"><i class="fas fa-shield-alt"></i><p>24/7 Security</p></div>
+            <div class="gallery-item"><i class="fas fa-book"></i><p>Study Zone</p></div>
+        </div>
+        <div style="margin-top: 25px; text-align: center; font-size: 1.1rem;">✨ "Where Comfort Meets Excellence" ✨</div>
+    </div>
+    <!-- Student Login Section -->
+<div id="student-login-section" class="section" style="display: none;">
+    <div class="student-login-container">
+        <!-- Login Form -->
+        <div id="studentLoginForm" class="student-login-card">
+            <i class="fas fa-user-graduate login-icon"></i>
+            <h2>Student Login</h2>
+            <p style="color: #666; margin-bottom: 25px;">Login with your Roll Number to view your details</p>
+            <div id="loginError" class="error-message"></div>
+            <div class="login-input-group">
+                <label><i class="fas fa-id-card"></i> Roll Number</label>
+                <input type="text" id="studentRollNo" placeholder="Enter your Roll Number" autocomplete="off">
+            </div>
+            <button id="studentLoginBtn" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <div class="register-link">
+                Don't have an account? <a href="#" id="gotoRegister">Register here</a>
+            </div>
+        </div>
+
+        <!-- Student Dashboard (hidden initially) -->
+        <div id="studentDashboard" style="display: none;">
+            <div class="student-dashboard-container">
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-user-graduate"></i> My Dashboard</h2>
+                    <button id="studentLogoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+                <div id="studentInfo"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- REGISTRATION FORM -->
+    <div id="register-section" class="section" style="display: none;">
+        <div class="section-title"><i class="fas fa-user-graduate"></i> Student Registration</div>
+        <div class="form-card">
+            <form id="studentForm">
+                <div class="grid-2col">
+                    <div class="form-group"><label><i class="fas fa-user"></i> Full Name</label><input type="text" id="fullName" placeholder="Enter full name" required></div>
+                    <div class="form-group"><label><i class="fas fa-id-card"></i> Roll Number</label><input type="text" id="rollNumber" placeholder="Unique Roll No" required></div>
+                    <div class="form-group"><label><i class="fas fa-calendar"></i> Year</label><select id="academicYear"><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select></div>
+                    <div class="form-group"><label><i class="fas fa-venus-mars"></i> Gender</label><select id="genderType"><option>Male</option><option>Female</option></select></div>
+                    <div class="form-group"><label><i class="fas fa-building"></i> Department</label><input type="text" id="department" placeholder="e.g., Computer Science" required></div>
+                    <div class="form-group"><label><i class="fas fa-phone"></i> Phone Number</label><input type="text" id="mobile" placeholder="9876543210"></div>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Register Student</button>
+            </form>
+        </div>
+        <div style="margin-top: 15px;"><i class="fas fa-info-circle"></i> After registration, assign room from Rooms section.</div>
+    </div>
+
+    <!-- ROOMS DETAILS TABLE & AVAILABILITY -->
+    <div id="rooms-section" class="section" style="display: none;">
+        <div class="section-title"><i class="fas fa-door-open"></i> Room Details & Availability</div>
+        <div class="table-wrapper"><div id="roomTableDisplay"></div></div>
+        <div class="stats-cards" id="roomStatsCards"></div>
+        <div class="section-title" style="margin-top: 35px;"><i class="fas fa-key"></i> Room Allocation</div>
+        <div class="grid-2col">
+            <div class="form-card"><h3><i class="fas fa-user-check"></i> Assign Room</h3><div class="form-group"><label>Select Student (Unallocated)</label><select id="studentSelect"></select></div><div class="form-group"><label>Select Room</label><select id="roomSelect"></select></div><button id="allocateRoomBtn" class="btn-primary"><i class="fas fa-check-circle"></i> Allocate Room</button></div>
+            <div class="form-card"><h3><i class="fas fa-chart-line"></i> Quick Overview</h3><div id="statsDisplay"></div></div>
+        </div>
+    </div>
+
+    <!-- ALLOCATION MAPPING + SORTING + SEARCH -->
+    <div id="allocation-section" class="section" style="display: none;">
+        <div class="section-title"><i class="fas fa-map-marked-alt"></i> Allocation Mapping</div>
+        <div class="search-bar">
+            <input type="text" id="searchRoll" placeholder="🔍 Search by Roll Number">
+            <button id="searchStudentBtn" class="btn-secondary">Search</button>
+            <button id="resetSearchBtn" class="btn-secondary">Reset</button>
+        </div>
+        <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+            <button id="sortByName" class="badge" style="cursor: pointer;"><i class="fas fa-sort-alpha-down"></i> Sort by Name</button>
+            <button id="sortByYear" class="badge" style="cursor: pointer;"><i class="fas fa-sort-numeric-down"></i> Sort by Year</button>
+            <button id="sortByRoomNo" class="badge" style="cursor: pointer;"><i class="fas fa-door-open"></i> Sort by Room</button>
+        </div>
+        <div class="table-wrapper">
+            <div id="allocationTable"></div>
+        </div>
+    </div>
+
+    <!-- PAYMENTS MODULE INR - WITH COMPLETE PAYMENT HISTORY TABLE -->
+    <div id="payments-section" class="section" style="display: none;">
+        <div class="section-title"><i class="fas fa-rupee-sign"></i> Payment Management (INR)</div>
+        <div class="grid-3col">
+            <div class="form-card">
+                <h3><i class="fas fa-plus-circle"></i> Record Payment</h3>
+                <div class="form-group"><label>Student (Allocated)</label><select id="paymentStudent"></select></div>
+                <div class="form-group"><label>Month</label><select id="paymentMonth">
+                    <option>January</option><option>February</option><option>March</option><option>April</option>
+                    <option>May</option><option>June</option><option>July</option><option>August</option>
+                    <option>September</option><option>October</option><option>November</option><option>December</option>
+                </select></div>
+                <div class="form-group"><label>Amount (₹)</label><input type="number" id="amountPaid" placeholder="8500" value="8500"></div>
+                <div class="form-group"><label>Payment Mode</label><select id="paymentMode">
+                    <option>Cash</option><option>UPI</option><option>Credit Card</option><option>Debit Card</option><option>Bank Transfer</option>
+                </select></div>
+                <button id="recordPayBtn" class="btn-primary"><i class="fas fa-rupee-sign"></i> Record Payment</button>
+            </div>
+            <div class="form-card">
+                <h3><i class="fas fa-chart-pie"></i> Financial Summary</h3>
+                <div id="financeSummary"></div>
+            </div>
+            <div class="form-card">
+                <h3><i class="fas fa-history"></i> Recent Payments (Last 5)</h3>
+                <div id="recentPayments"></div>
+            </div>
+        </div>
+        
+        <!-- COMPLETE PAYMENT HISTORY IN PROPER TABLE FORMAT -->
+        <div style="margin-top: 30px;">
+            <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <i class="fas fa-list-alt" style="color: #ff8c42;"></i> 
+                Complete Payment History
+                <span class="badge" id="paymentCount"></span>
+            </h3>
+            <div class="table-wrapper">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #fff3e6; border-bottom: 2px solid #ff8c42;">
+                            <th style="padding: 14px; text-align: left;"><i class="fas fa-hashtag"></i> S.No</th>
+                            <th style="padding: 14px; text-align: left;"><i class="fas fa-user"></i> Student Name</th>
+                            <th style="padding: 14px; text-align: left;"><i class="fas fa-id-card"></i> Roll Number</th>
+                            <th style="padding: 14px; text-align: left;"><i class="fas fa-calendar-alt"></i> Month</th>
+                            <th style="padding: 14px; text-align: left;"><i class="fas fa-rupee-sign"></i> Amount (₹)</th>
+                            <th style="padding: 14px; text-align: left;"><i class="fas fa-credit-card"></i> Payment Mode</th>
+                            <th style="padding: 14px; text-align: left;"><i class="fas fa-calendar-day"></i> Date</th>
+                            <th style="padding: 14px; text-align: left;"><i class="fas fa-receipt"></i> Transaction ID</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentHistoryBody">
+                        <!-- Payment records will be inserted here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="admin-section" class="section" style="display: none;">
+        <div class="admin-header">
+            <div class="section-title" style="margin-bottom:0;"><i class="fas fa-user-shield"></i> Admin Panel</div>
+            <button id="adminLogoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+        <div class="grid-2col">
+            <div class="form-card">
+                <h3><i class="fas fa-plus-circle"></i> Add New Room</h3>
+                <div class="form-group"><label>Room Number</label><input type="text" id="newRoomNum" placeholder="e.g., 101"></div>
+                <div class="form-group"><label>Capacity</label><input type="number" id="newRoomCap" value="3" min="1"></div>
+                <div class="form-group"><label>Monthly Rent (₹)</label><input type="number" id="newRoomRent" value="8500" min="1000"></div>
+                <button id="addRoomAdmin" class="btn-primary">Add Room</button>
+                <hr style="margin: 20px 0;">
+                <h3><i class="fas fa-edit"></i> Edit/Delete Room</h3>
+                <select id="editRoomList"></select>
+                <div class="form-group"><label>New Rent (₹)</label><input type="number" id="editRent"></div>
+                <div class="form-group"><label>New Capacity</label><input type="number" id="editCapacity"></div>
+                <button id="updateRoomAdmin" class="btn-secondary">Update</button>
+                <button id="deleteRoomAdmin" class="btn-secondary" style="background:#ffe0e0; margin-top:8px;">Delete Room</button>
+            </div>
+            <div class="form-card">
+                <h3><i class="fas fa-user-minus"></i> Delete Student</h3>
+                <select id="deleteStudentList"></select>
+                <button id="deleteStudentAdmin" class="btn-secondary" style="background:#ffe0e0; margin-top:12px;">Delete Student & Records</button>
+                <hr style="margin: 20px 0;">
+                <div id="adminStats"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div id="contact-section" class="section" style="display: none;">
+        <div class="section-title"><i class="fas fa-address-card"></i> Contact Us</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 30px;">
+            <div style="flex:1; background: white; border-radius: 28px; padding: 28px;">
+                <i class="fas fa-map-marker-alt" style="font-size: 38px; color:#ff8c42;"></i>
+                <h3>Address</h3>
+                <p> Pragati Engineering College, Surampalem, Kakinada, Andhra Pradesh</p>
+                <p><i class="fas fa-phone"></i> +91 7780314892</p>
+                <p><i class="fas fa-envelope"></i> info@hostelharmony.com</p>
+            </div>
+            <div style="flex:1; background: white; border-radius: 28px; padding: 28px;">
+                <i class="fas fa-clock"></i>
+                <h3>Office Hours</h3>
+                <p>Monday - Saturday: 9:00 AM - 9:00 PM</p>
+                <p>Sunday: 10:00 AM - 5:00 PM</p>
+                <p><i class="fas fa-rupee-sign"></i> Payment Support: payments@hostelharmony.com</p>
+                <p><i class="fas fa-hands-helping"></i> Emergency: +91 9988776655 (24x7)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT US PAGE -->
+    <div id="about-section" class="section" style="display: none;">
+        <div class="section-title"><i class="fas fa-info-circle"></i> About Us</div>
+        <div class="about-content">
+            <h2 style="color: #ff8c42; margin-bottom: 20px;">Welcome to Hostel Harmony</h2>
+            <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px;">Established in 2026, Hostel Harmony is a premier student accommodation facility dedicated to providing a safe, comfortable, and nurturing environment for students pursuing higher education. We understand that finding the right living space is crucial for academic success, which is why we've created a home away from home.</p>
+            
+            <h3 style="color: #2c3e50; margin: 25px 0 15px 0;"><i class="fas fa-bullseye"></i> Our Mission</h3>
+            <p style="line-height: 1.6; margin-bottom: 20px;">To provide affordable, safe, and comfortable accommodation that fosters academic excellence and personal growth, while creating a supportive community where students can thrive.</p>
+            
+            <h3 style="color: #2c3e50; margin: 25px 0 15px 0;"><i class="fas fa-eye"></i> Our Vision</h3>
+            <p style="line-height: 1.6; margin-bottom: 20px;">To become the most trusted and preferred student housing provider, known for our exceptional facilities, transparent management, and commitment to student well-being.</p>
+            
+            <div class="about-stats">
+                <div class="about-stat-item">
+                    <i class="fas fa-users" style="font-size: 36px; color: #ff8c42;"></i>
+                    <h3>500+</h3>
+                    <p>Happy Students</p>
+                </div>
+                <div class="about-stat-item">
+                    <i class="fas fa-bed" style="font-size: 36px; color: #ff8c42;"></i>
+                    <h3>100+</h3>
+                    <p>Comfortable Rooms</p>
+                </div>
+                <div class="about-stat-item">
+                    <i class="fas fa-calendar-alt" style="font-size: 36px; color: #ff8c42;"></i>
+                    <h3>2+</h3>
+                    <p>Years of Excellence</p>
+                </div>
+                <div class="about-stat-item">
+                    <i class="fas fa-smile" style="font-size: 36px; color: #ff8c42;"></i>
+                    <h3>98%</h3>
+                    <p>Satisfaction Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">🏠 Hostel Harmony | Smart Living | <i class="fas fa-rupee-sign"></i> Digital Payments | Since 2026</div>
+</div>
+
+<script>
+    // Admin Credentials
+    const ADMIN_CREDENTIALS = {
+        username: "admin",
+        password: "admin123"
+    };
+    
+    let isAdminLoggedIn = false;
+    
+    // Data stores
+    let students = [];
+    let rooms = [];
+    let allocations = [];
+    let payments = [];
+    let nextId = { student: 1, room: 1, payment: 1 };
+    
+    function saveData() {
+        localStorage.setItem('hostelStudents', JSON.stringify(students));
+        localStorage.setItem('hostelRooms', JSON.stringify(rooms));
+        localStorage.setItem('hostelAllocations', JSON.stringify(allocations));
+        localStorage.setItem('hostelPayments', JSON.stringify(payments));
+        localStorage.setItem('hostelIds', JSON.stringify(nextId));
+    }
+    
+    function loadData() {
+        let s = localStorage.getItem('hostelStudents');
+        let r = localStorage.getItem('hostelRooms');
+        let a = localStorage.getItem('hostelAllocations');
+        let p = localStorage.getItem('hostelPayments');
+        let ids = localStorage.getItem('hostelIds');
+        if(s) students = JSON.parse(s);
+        if(r) rooms = JSON.parse(r);
+        if(a) allocations = JSON.parse(a);
+        if(p) payments = JSON.parse(p);
+        if(ids) nextId = JSON.parse(ids);
+        refreshAll();
+    }
+    
+    function updateRoomFill() {
+        rooms.forEach(room => {
+            room.filled = allocations.filter(a => a.roomId === room.id).length;
+        });
+    }
+    
+    function getStudent(id) { return students.find(s => s.id === id); }
+    function getRoom(id) { return rooms.find(r => r.id === id); }
+    
+    function refreshAll() {
+        updateRoomFill();
+        renderRoomTable();
+        renderAllocationTable(currentSort, currentSearch);
+        renderStats();
+        populateDropdowns();
+        renderPayments();
+        if(isAdminLoggedIn) renderAdminStats();
+        saveData();
+    }
+    
+    // Room Details Table with Availability Status
+   function renderRoomTable() {
+        let html = `<table><thead><tr><th>Room No</th><th>Capacity</th><th>Filled</th><th>Rent (₹)</th><th>Available</th><th>Status</th></tr></thead><tbody>`;
+        if(rooms.length === 0) html += `<tr><td colspan="6" style="text-align:center;">🏚️ No rooms available. Add from Admin.</td></tr>`;
+        else rooms.forEach(room => {
+            let available = room.capacity - room.filled;
+            let statusClass = available === 0 ? 'status-full' : (available === room.capacity ? 'status-available' : 'status-partial');
+            let statusText = available === 0 ? 'Full' : (available === room.capacity ? 'Available' : 'Partial');
+            html += `<tr><td>🚪 ${room.roomNo}</td><td>${room.capacity}</td><td>${room.filled}</td><td class="amount">₹${room.rent}</td><td>${available}</td><td><span class="${statusClass}">${statusText}</span></td></tr>`;
+        });
+        html += `</tbody></table>`;
+        document.getElementById('roomTableDisplay').innerHTML = html;
+        let totalRooms = rooms.length, totalCap = rooms.reduce((s,r)=>s+r.capacity,0), totalFilled = allocations.length;
+        document.getElementById('roomStatsCards').innerHTML = `<div class="stat-card"><i class="fas fa-door-open"></i><h3>${totalRooms}</h3><p>Rooms</p></div><div class="stat-card"><i class="fas fa-bed"></i><h3>${totalCap}</h3><p>Seats</p></div><div class="stat-card"><i class="fas fa-user-friends"></i><h3>${totalFilled}</h3><p>Occupied</p></div><div class="stat-card"><i class="fas fa-check-circle"></i><h3>${totalCap - totalFilled}</h3><p>Vacant</p></div>`;
+    }
+
+        
+        // Room Statistics Cards
+        let totalRooms = rooms.length;
+        let totalCapacity = rooms.reduce((s,r) => s + r.capacity, 0);
+        let totalFilled = allocations.length;
+        let availableSeats = totalCapacity - totalFilled;
+        let totalMonthlyRevenue = rooms.reduce((s,r) => s + (r.rent * r.filled), 0);
+        
+        document.getElementById('roomStatsCards').innerHTML = `
+            <div class="stat-card"><i class="fas fa-door-open" style="font-size: 24px; color:#ff8c42;"></i><h3>${totalRooms}</h3><p>Total Rooms</p></div>
+            <div class="stat-card"><i class="fas fa-bed" style="font-size: 24px; color:#ff8c42;"></i><h3>${totalCapacity}</h3><p>Total Seats</p></div>
+            <div class="stat-card"><i class="fas fa-user-friends" style="font-size: 24px; color:#ff8c42;"></i><h3>${totalFilled}</h3><p>Occupied</p></div>
+            <div class="stat-card"><i class="fas fa-check-circle" style="font-size: 24px; color:#27ae60;"></i><h3>${availableSeats}</h3><p>Vacant Seats</p></div>
+            <div class="stat-card"><i class="fas fa-rupee-sign" style="font-size: 24px; color:#ff8c42;"></i><h3>₹${totalMonthlyRevenue.toLocaleString()}</h3><p>Monthly Revenue</p></div>
+        `;
+    
+    
+    let currentSort = null;
+    let currentSearch = "";
+    
+    function renderAllocationTable(sort, search) {
+        let filtered = allocations.filter(alloc => {
+            let stu = getStudent(alloc.studentId);
+            return stu && (!search || stu.rollNo.toLowerCase().includes(search.toLowerCase()));
+        });
+        let mapping = filtered.map(alloc => ({ student: getStudent(alloc.studentId), room: getRoom(alloc.roomId) })).filter(m => m.student && m.room);
+        if(sort === 'name') mapping.sort((a,b) => a.student.name.localeCompare(b.student.name));
+        if(sort === 'year') mapping.sort((a,b) => a.student.year.localeCompare(b.student.year));
+        if(sort === 'room') mapping.sort((a,b) => a.room.roomNo.localeCompare(b.room.roomNo));
+        
+        let html = `<table><thead><tr><th>Student Name</th><th>Roll No</th><th>Year</th><th>Department</th><th>Room No</th><th>Rent (₹)</th></tr></thead><tbody>`;
+        if(mapping.length === 0) html += `<tr><td colspan="6" style="text-align:center; padding: 40px;">✨ No allocations yet. Allocate rooms first.</td></tr>`;
+        mapping.forEach(m => {
+            html += `<tr>
+                <td><i class="fas fa-user-graduate"></i> ${m.student.name}</td>
+                <td>${m.student.rollNo}</td>
+                <td>${m.student.year}</td>
+                <td>${m.student.dept}</td>
+                <td>🏠 ${m.room.roomNo}</td>
+                <td class="amount">₹${m.room.rent}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+        document.getElementById('allocationTable').innerHTML = html;
+    }
+    
+    function renderStats() {
+        let totalRooms = rooms.length;
+        let totalCap = rooms.reduce((s,r) => s + r.capacity, 0);
+        let totalFilled = allocations.length;
+        let monthlyCollection = rooms.reduce((s,r) => s + (r.rent * r.filled), 0);
+        document.getElementById('statsDisplay').innerHTML = `
+            <div><i class="fas fa-building"></i> <strong>Rooms:</strong> ${totalRooms}</div>
+            <div><i class="fas fa-bed"></i> <strong>Total Seats:</strong> ${totalCap}</div>
+            <div><i class="fas fa-users"></i> <strong>Occupied:</strong> ${totalFilled}</div>
+            <div><i class="fas fa-rupee-sign"></i> <strong>Monthly Revenue:</strong> ₹${monthlyCollection.toLocaleString()}</div>
+            <div><i class="fas fa-check-circle"></i> <strong>Vacant:</strong> ${totalCap - totalFilled}</div>
+        `;
+    }
+    
+    function populateDropdowns() {
+        let unallocated = students.filter(s => !allocations.some(a => a.studentId === s.id));
+        let stuSelect = document.getElementById('studentSelect');
+        stuSelect.innerHTML = '<option value="">-- Select Student --</option>' + unallocated.map(s => `<option value="${s.id}">${s.name} (${s.rollNo})</option>`).join('');
+        
+        let availRooms = rooms.filter(r => r.filled < r.capacity);
+        let roomSelect = document.getElementById('roomSelect');
+        roomSelect.innerHTML = '<option value="">-- Select Room --</option>' + availRooms.map(r => `<option value="${r.id}">Room ${r.roomNo} (₹${r.rent}/month, ${r.capacity - r.filled} left)</option>`).join('');
+        
+        let editSelect = document.getElementById('editRoomList');
+        editSelect.innerHTML = '<option value="">-- Edit Room --</option>' + rooms.map(r => `<option value="${r.id}" data-rent="${r.rent}" data-cap="${r.capacity}">Room ${r.roomNo} (₹${r.rent})</option>`).join('');
+        editSelect.onchange = function() {
+            let opt = editSelect.options[editSelect.selectedIndex];
+            document.getElementById('editRent').value = opt.getAttribute('data-rent') || '';
+            document.getElementById('editCapacity').value = opt.getAttribute('data-cap') || '';
+        };
+        
+        let delStu = document.getElementById('deleteStudentList');
+        delStu.innerHTML = '<option value="">-- Delete Student --</option>' + students.map(s => `<option value="${s.id}">${s.name} (${s.rollNo})</option>`).join('');
+        
+        let allocatedStudents = allocations.map(a => getStudent(a.studentId)).filter(s => s);
+        let payStu = document.getElementById('paymentStudent');
+        payStu.innerHTML = '<option value="">-- Select Student --</option>' + allocatedStudents.map(s => `<option value="${s.id}">${s.name} (${s.rollNo})</option>`).join('');
+    }
+    
+    function renderPayments() {
+        let totalPaid = payments.reduce((s,p) => s + p.amount, 0);
+        let expectedMonthly = allocations.reduce((sum,alloc) => {
+            let room = getRoom(alloc.roomId);
+            return sum + (room ? room.rent : 0);
+        }, 0);
+        
+        document.getElementById('financeSummary').innerHTML = `
+            <div style="margin-bottom: 12px;"><strong>💰 Total Collected:</strong> <span class="amount">₹${totalPaid.toLocaleString()}</span></div>
+            <div style="margin-bottom: 12px;"><strong>📋 Monthly Expected:</strong> ₹${expectedMonthly.toLocaleString()}</div>
+            <div style="margin-bottom: 12px;"><strong>⏳ Pending Dues:</strong> <span style="color:#e67e22;">₹${Math.max(0, expectedMonthly - totalPaid).toLocaleString()}</span></div>
+            <div style="margin-bottom: 12px;"><strong>✅ Total Transactions:</strong> ${payments.length}</div>
+            <div><strong>👥 Students Paid:</strong> ${new Set(payments.map(p => p.studentId)).size} / ${allocations.length}</div>
+        `;
+        
+        // Recent Payments
+        let recentHtml = '';
+        if(payments.length === 0) {
+            recentHtml = '<p style="text-align:center; padding: 20px; color:#999;">No payments recorded yet</p>';
+        } else {
+            payments.slice(-5).reverse().forEach(p => {
+                let stu = getStudent(p.studentId);
+                recentHtml += `
+                    <div style="padding: 12px 0; border-bottom: 1px solid #ffe0b5;">
+                        <div><strong>${stu?.name || 'Deleted Student'}</strong></div>
+                        <div style="font-size: 0.85rem; color: #666;">
+                            <i class="fas fa-rupee-sign"></i> ₹${p.amount} | 
+                            <i class="fas fa-calendar"></i> ${p.month} | 
+                            <i class="fas fa-credit-card"></i> ${p.mode}
+                        </div>
+                        <div style="font-size: 0.75rem; color: #999;">${p.date}</div>
+                    </div>
+                `;
+            });
+        }
+        document.getElementById('recentPayments').innerHTML = recentHtml;
+        
+        // COMPLETE PAYMENT HISTORY TABLE with proper format
+        let historyHtml = '';
+        if(payments.length === 0) {
+            historyHtml = `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 50px;">
+                        <i class="fas fa-receipt" style="font-size: 48px; color: #ff8c42; opacity: 0.5;"></i>
+                        <p style="margin-top: 15px; color: #999;">No payment records found</p>
+                        <p style="font-size: 0.85rem; color: #bbb;">Record payments using the form above</p>
+                    </td>
+                </tr>
+            `;
+        } else {
+            // Sort payments by date (newest first)
+            let sortedPayments = [...payments].reverse();
+            sortedPayments.forEach((p, index) => {
+                let stu = getStudent(p.studentId);
+                let serialNo = sortedPayments.length - index;
+                let modeColor = '';
+                let modeIcon = '';
+                if(p.mode === 'UPI') {
+                    modeColor = '#e3f2fd';
+                    modeIcon = 'fa-mobile-alt';
+                } else if(p.mode === 'Cash') {
+                    modeColor = '#e8f5e9';
+                    modeIcon = 'fa-money-bill-wave';
+                } else {
+                    modeColor = '#fff3e0';
+                    modeIcon = 'fa-credit-card';
+                }
+                
+                historyHtml += `
+                    <tr class="payment-row" style="border-bottom: 1px solid #ffebd2;">
+                        <td style="padding: 14px; color: #ff8c42; font-weight: 600;">#${serialNo}</td>
+                        <td style="padding: 14px;">
+                            <i class="fas fa-user-graduate" style="color: #ff8c42; margin-right: 8px;"></i>
+                            <strong>${stu?.name || 'Deleted Student'}</strong>
+                        </td>
+                        <td style="padding: 14px;">${stu?.rollNo || '-'}</td>
+                        <td style="padding: 14px;">
+                            <span class="badge" style="background: #fff0e0;">${p.month}</span>
+                        </td>
+                        <td style="padding: 14px;">
+                            <span class="amount" style="font-size: 1.05rem; font-weight: 700;">₹${p.amount.toLocaleString()}</span>
+                        </td>
+                        <td style="padding: 14px;">
+                            <span style="
+                                background: ${modeColor};
+                                color: #2c3e50;
+                                padding: 5px 12px;
+                                border-radius: 20px;
+                                font-size: 0.8rem;
+                                font-weight: 600;
+                                display: inline-block;
+                            ">
+                                <i class="fas ${modeIcon}" style="margin-right: 5px;"></i>
+                                ${p.mode}
+                            </span>
+                        </td>
+                        <td style="padding: 14px;">
+                            <i class="fas fa-calendar-day" style="color: #ff8c42; margin-right: 5px;"></i>
+                            ${p.date}
+                        </td>
+                        <td style="padding: 14px;">
+                            <span style="font-family: monospace; font-size: 0.85rem; background: #f5f5f5; padding: 4px 8px; border-radius: 6px;">
+                                #HOSTEL${p.id.toString().padStart(5, '0')}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        document.getElementById('paymentHistoryBody').innerHTML = historyHtml;
+        document.getElementById('paymentCount').innerHTML = `(${payments.length} records)`;
+    }
+    
+    function renderAdminStats() {
+        document.getElementById('adminStats').innerHTML = `
+            <p><i class="fas fa-users"></i> Total Students: ${students.length}</p>
+            <p><i class="fas fa-bed"></i> Total Rooms: ${rooms.length}</p>
+            <p><i class="fas fa-rupee-sign"></i> Total Payments: ₹${payments.reduce((s,p)=>s+p.amount,0).toLocaleString()}</p>
+            <p><i class="fas fa-check-circle"></i> Active Allocations: ${allocations.length}</p>
+            <p><i class="fas fa-receipt"></i> Payment Transactions: ${payments.length}</p>
+        `;
+    }
+    
+    // Admin Login Modal Logic
+    function showAdminLogin() {
+        if(isAdminLoggedIn) { showSection('admin'); return; }
+        const overlay = document.createElement('div');
+        overlay.className = 'login-overlay';
+        overlay.innerHTML = `
+            <div class="login-modal">
+                <i class="fas fa-user-shield"></i>
+                <h2>Admin Login</h2>
+                <input type="text" id="loginUsername" placeholder="Username" autocomplete="off">
+                <input type="password" id="loginPassword" placeholder="Password">
+                <button id="loginSubmitBtn" class="btn-primary">Login</button>
+                <div id="loginErrorMsg" class="login-error"></div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        const submitBtn = overlay.querySelector('#loginSubmitBtn');
+        const usernameInp = overlay.querySelector('#loginUsername');
+        const passInp = overlay.querySelector('#loginPassword');
+        const errorDiv = overlay.querySelector('#loginErrorMsg');
+        
+        const attemptLogin = () => {
+            const uname = usernameInp.value.trim();
+            const pwd = passInp.value;
+            if(uname === ADMIN_CREDENTIALS.username && pwd === ADMIN_CREDENTIALS.password) {
+                isAdminLoggedIn = true;
+                overlay.remove();
+                showSection('admin');
+                renderAdminStats();
+                refreshAll();
+            } else {
+                errorDiv.innerText = "❌ Invalid username or password!";
+            }
+        };
+        submitBtn.onclick = attemptLogin;
+        usernameInp.onkeypress = (e) => { if(e.key === 'Enter') attemptLogin(); };
+        passInp.onkeypress = (e) => { if(e.key === 'Enter') attemptLogin(); };
+    }
+    
+    function adminLogout() {
+        isAdminLoggedIn = false;
+        showSection('home');
+        alert("🔐 Admin logged out successfully.");
+    }
+    
+    // Navigation & Protection
+    const sections = ['home','student-login', 'register', 'rooms', 'allocation', 'payments', 'admin', 'about', 'contact'];
+    function showSection(sec) {
+        if(sec === 'admin' && !isAdminLoggedIn) {
+            showAdminLogin();
+            return;
+        }
+        sections.forEach(s => { document.getElementById(`${s}-section`).style.display = s === sec ? 'block' : 'none'; });
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            if(btn.getAttribute('data-section') === sec) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+        if(sec === 'allocation') renderAllocationTable(currentSort, currentSearch);
+        if(sec === 'rooms') renderRoomTable();
+        if(sec === 'payments') renderPayments();
+        if(sec === 'admin' && isAdminLoggedIn) renderAdminStats();
+    }
+    
+    // Event Handlers
+    document.getElementById('studentForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        let name = document.getElementById('fullName').value.trim();
+        let roll = document.getElementById('rollNumber').value.trim();
+        if(!name || !roll) return alert("Name and Roll No required");
+        if(students.some(s => s.rollNo === roll)) return alert("Roll No already exists!");
+        students.push({ id: nextId.student++, name, rollNo: roll, year: document.getElementById('academicYear').value, gender: document.getElementById('genderType').value, dept: document.getElementById('department').value, phone: document.getElementById('mobile').value });
+        refreshAll();
+        document.getElementById('studentForm').reset();
+        alert("✅ Student Registered Successfully!");
+    });
+    
+    document.getElementById('allocateRoomBtn').onclick = () => {
+        let sid = document.getElementById('studentSelect').value;
+        let rid = document.getElementById('roomSelect').value;
+        if(!sid || !rid) return alert("Select student and room");
+        sid = parseInt(sid); rid = parseInt(rid);
+        if(allocations.some(a => a.studentId === sid)) return alert("Student already allocated");
+        let room = rooms.find(r => r.id === rid);
+        if(room.filled >= room.capacity) return alert("Room full");
+        allocations.push({ studentId: sid, roomId: rid, date: new Date().toISOString() });
+        refreshAll();
+        alert("🎉 Room Allocated Successfully!");
+    };
+    
+    document.getElementById('recordPayBtn').onclick = () => {
+        let sid = document.getElementById('paymentStudent').value;
+        if(!sid) return alert("Select a student");
+        let amount = parseFloat(document.getElementById('amountPaid').value);
+        if(isNaN(amount) || amount <= 0) return alert("Enter valid amount");
+        payments.push({ 
+            id: nextId.payment++, 
+            studentId: parseInt(sid), 
+            month: document.getElementById('paymentMonth').value, 
+            amount, 
+            mode: document.getElementById('paymentMode').value, 
+            date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+        });
+        refreshAll();
+        alert(`✅ Payment of ₹${amount} recorded successfully!`);
+        document.getElementById('amountPaid').value = '8500';
+    };
+    
+    document.getElementById('addRoomAdmin').onclick = () => {
+        if(!isAdminLoggedIn) return alert("Please login as admin");
+        let rno = document.getElementById('newRoomNum').value.trim();
+        let cap = parseInt(document.getElementById('newRoomCap').value);
+        let rent = parseInt(document.getElementById('newRoomRent').value);
+        if(!rno || cap<1 || rent<1000) return alert("Valid room number, capacity & rent (min ₹1000)");
+        if(rooms.some(r => r.roomNo === rno)) return alert("Room exists");
+        rooms.push({ id: nextId.room++, roomNo: rno, capacity: cap, filled: 0, rent });
+        refreshAll();
+        document.getElementById('newRoomNum').value = '';
+        alert("Room added successfully!");
+    };
+    
+    document.getElementById('updateRoomAdmin').onclick = () => {
+        if(!isAdminLoggedIn) return;
+        let rid = document.getElementById('editRoomList').value;
+        if(!rid) return alert("Select room");
+        let room = rooms.find(r => r.id == rid);
+        let newRent = parseInt(document.getElementById('editRent').value);
+        let newCap = parseInt(document.getElementById('editCapacity').value);
+        if(newRent > 0) room.rent = newRent;
+        if(newCap >= room.filled) room.capacity = newCap;
+        refreshAll();
+        alert("Room updated");
+    };
+    
+    document.getElementById('deleteRoomAdmin').onclick = () => {
+        if(!isAdminLoggedIn) return;
+        let rid = document.getElementById('editRoomList').value;
+        if(!rid) return alert("Select room");
+        if(allocations.some(a => a.roomId == rid)) return alert("Cannot delete: students allocated");
+        rooms = rooms.filter(r => r.id != rid);
+        refreshAll();
+        alert("Room deleted");
+    };
+    
+    document.getElementById('deleteStudentAdmin').onclick = () => {
+        if(!isAdminLoggedIn) return;
+        let sid = document.getElementById('deleteStudentList').value;
+        if(!sid) return alert("Select student");
+        sid = parseInt(sid);
+        allocations = allocations.filter(a => a.studentId !== sid);
+        payments = payments.filter(p => p.studentId !== sid);
+        students = students.filter(s => s.id !== sid);
+        refreshAll();
+        alert("Student deleted");
+    };
+    
+    document.getElementById('adminLogoutBtn').addEventListener('click', adminLogout);
+    
+    // Sorting & Search
+    document.getElementById('sortByName').onclick = () => { currentSort='name'; renderAllocationTable(currentSort, currentSearch); };
+    document.getElementById('sortByYear').onclick = () => { currentSort='year'; renderAllocationTable(currentSort, currentSearch); };
+    document.getElementById('sortByRoomNo').onclick = () => { currentSort='room'; renderAllocationTable(currentSort, currentSearch); };
+    document.getElementById('searchStudentBtn').onclick = () => { currentSearch = document.getElementById('searchRoll').value; renderAllocationTable(currentSort, currentSearch); };
+    document.getElementById('resetSearchBtn').onclick = () => { currentSearch=""; document.getElementById('searchRoll').value=""; renderAllocationTable(currentSort, currentSearch); };
+    
+    document.getElementById('exploreBtn').onclick = () => showSection('rooms');
+    document.getElementById('registerBtn').onclick = () => showSection('register');
+    
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => showSection(btn.getAttribute('data-section'))));
+    
+    loadData();
+    showSection('home');
+    // Student Login Variables
+let loggedInStudent = null;
+
+// Student Login Function
+function studentLogin() {
+    let rollNo = document.getElementById('studentRollNo').value.trim();
+    let errorDiv = document.getElementById('loginError');
+    
+    if(!rollNo) {
+        errorDiv.style.display = 'block';
+        errorDiv.innerHTML = '❌ Please enter your Roll Number';
+        return;
+    }
+    
+    let student = students.find(s => s.rollNo === rollNo);
+    if(!student) {
+        errorDiv.style.display = 'block';
+        errorDiv.innerHTML = '❌ Student not found! Please register first.';
+        return;
+    }
+    
+    errorDiv.style.display = 'none';
+    loggedInStudent = student;
+    showStudentDashboard(student);
+    
+    // Hide login form, show dashboard
+    document.getElementById('studentLoginForm').style.display = 'none';
+    document.getElementById('studentDashboard').style.display = 'block';
+}
+
+// Show Student Dashboard with Room Details, Allocation & Payment History
+function showStudentDashboard(student) {
+    // Find student's allocation
+    let allocation = allocations.find(a => a.studentId === student.id);
+    let room = allocation ? getRoom(allocation.roomId) : null;
+    
+    // Get student's payment history
+    let studentPayments = payments.filter(p => p.studentId === student.id);
+    let totalPaid = studentPayments.reduce((sum, p) => sum + p.amount, 0);
+    let monthlyRent = room ? room.rent : 0;
+    let rentDue = monthlyRent - totalPaid;
+    if(rentDue < 0) rentDue = 0;
+    
+    let paymentStatus = rentDue === 0 ? 'Paid' : 'Pending';
+    let paymentStatusClass = rentDue === 0 ? 'paid-badge' : 'pending-badge';
+    
+    let html = `
+        <!-- Personal Information Card -->
+        <div class="student-info-card">
+            <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-user"></i> Full Name:</span>
+                <span class="info-value">${student.name}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-id-card"></i> Roll Number:</span>
+                <span class="info-value">${student.rollNo}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-calendar"></i> Year:</span>
+                <span class="info-value">${student.year}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-venus-mars"></i> Gender:</span>
+                <span class="info-value">${student.gender}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-building"></i> Department:</span>
+                <span class="info-value">${student.dept}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-phone"></i> Phone:</span>
+                <span class="info-value">${student.phone || 'Not provided'}</span>
+            </div>
+        </div>
+        
+        <!-- Room Details Card -->
+        <div class="student-info-card">
+            <h3><i class="fas fa-bed"></i> Room Details</h3>
+            ${room ? `
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-door-open"></i> Room Number:</span>
+                    <span class="info-value"><strong>🚪 ${room.roomNo}</strong></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-rupee-sign"></i> Monthly Rent:</span>
+                    <span class="info-value amount">₹${room.rent.toLocaleString()}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-users"></i> Room Capacity:</span>
+                    <span class="info-value">${room.capacity} seats (${room.filled} occupied)</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-check-circle"></i> Allocation Status:</span>
+                    <span class="info-value"><span class="status-available">Allocated</span></span>
+                </div>
+            ` : `
+                <div class="info-row">
+                    <span class="info-value" style="color: #e67e22;">
+                        <i class="fas fa-exclamation-triangle"></i> Not allocated to any room yet.
+                        <br>Please contact the admin.
+                    </span>
+                </div>
+            `}
+        </div>
+        
+        <!-- Payment Summary Card -->
+        <div class="student-info-card">
+            <h3><i class="fas fa-rupee-sign"></i> Payment Summary</h3>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-receipt"></i> Total Paid:</span>
+                <span class="info-value amount">₹${totalPaid.toLocaleString()}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-calendar"></i> Monthly Rent:</span>
+                <span class="info-value amount">₹${monthlyRent.toLocaleString()}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-clock"></i> Rent Due:</span>
+                <span class="info-value"><span class="payment-status-badge ${paymentStatusClass}">${rentDue === 0 ? '₹0 - Fully Paid' : `₹${rentDue.toLocaleString()}`}</span></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-chart-line"></i> Payment Status:</span>
+                <span class="info-value"><span class="payment-status-badge ${paymentStatusClass}">${paymentStatus}</span></span>
+            </div>
+        </div>
+        
+        <!-- Payment History Card with Table -->
+        <div class="student-info-card">
+            <h3><i class="fas fa-history"></i> My Payment History</h3>
+            ${studentPayments.length > 0 ? `
+                <div class="table-wrapper" style="margin-top: 10px;">
+                    <table style="width: 100%; font-size: 0.9rem;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th><i class="fas fa-calendar"></i> Month</th>
+                                <th><i class="fas fa-rupee-sign"></i> Amount</th>
+                                <th><i class="fas fa-credit-card"></i> Mode</th>
+                                <th><i class="fas fa-calendar-day"></i> Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${studentPayments.slice().reverse().map((p, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${p.month}</td>
+                                    <td class="amount">₹${p.amount.toLocaleString()}</td>
+                                    <td><span class="payment-method-badge">${p.mode}</span></td>
+                                    <td>${p.date}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            ` : `
+                <div style="text-align: center; padding: 30px; color: #666;">
+                    <i class="fas fa-receipt" style="font-size: 48px; opacity: 0.5;"></i>
+                    <p>No payment records found.</p>
+                    <p style="font-size: 0.85rem;">Please contact the admin for payment details.</p>
+                </div>
+            `}
+        </div>
+    `;
+    
+    document.getElementById('studentInfo').innerHTML = html;
+}
+
+// Student Logout Function
+function studentLogout() {
+    loggedInStudent = null;
+    document.getElementById('studentLoginForm').style.display = 'block';
+    document.getElementById('studentDashboard').style.display = 'none';
+    document.getElementById('studentRollNo').value = '';
+    document.getElementById('loginError').style.display = 'none';
+    
+    // Show success message
+    let successDiv = document.createElement('div');
+    successDiv.className = 'success-message';
+    successDiv.innerHTML = '✅ Logged out successfully!';
+    document.getElementById('studentLoginForm').insertBefore(successDiv, document.getElementById('studentLoginForm').firstChild);
+    setTimeout(() => successDiv.remove(), 2000);
+}
+
+// Add event listeners for Student Login
+document.getElementById('studentLoginBtn').addEventListener('click', studentLogin);
+document.getElementById('studentLogoutBtn').addEventListener('click', studentLogout);
+document.getElementById('studentRollNo').addEventListener('keypress', function(e) {
+    if(e.key === 'Enter') studentLogin();
+});
+
+// Go to Register from Login
+document.getElementById('gotoRegister').addEventListener('click', function(e) {
+    e.preventDefault();
+    showSection('register');
+});
+</script>
+</body>
+</html>
